@@ -4,14 +4,16 @@ import android.content.Context
 import java.sql.DriverManager
 import java.sql.SQLException
 import java.sql.Connection
+import java.sql.RowId
 
 class DatabaseConnector(context:Context) {
 
     val url = "jdbc:mysql://sql.freedb.tech:3306/freedb_tripadvisor?autoReconnect=true&useSSL=false"
     val user = "freedb_tripadvisor"
-    val password = "PcDfB\$3Et%p%jq3"
-    val sharedPreferences = context.getSharedPreferences("TripAdvisor", Context.MODE_PRIVATE)
+    val password = "pW@yKYBN5a8@@q6"
+    val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
     private var connection: Connection? = null
+    val context=context
 
     init {
         connect()
@@ -63,53 +65,54 @@ class DatabaseConnector(context:Context) {
         }
     }
 
-
-
-        fun login(username: String, password: String): Boolean {
-            println("$username $password")
-            var userExist = false
-            val authenticateQuery =
-                "select * from users where username='$username' and password='$password'";
-            val thread = Thread {
-                try {
-                    println(authenticateQuery)
-                    val statement = connection?.createStatement()
-                    val resultSet = statement?.executeQuery(authenticateQuery);
-                    while (resultSet?.next() == true) {
-                        userExist = true
-                        val editor = sharedPreferences.edit()
-                        editor.putString("username",resultSet.getString("username"))
-                        editor.apply()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-
-
-            thread.start()
+    fun login(username: String, password: String): Boolean {
+        println("$username $password")
+        var userExist = false
+        val authenticateQuery =
+            "select * from users where username='$username' and password='$password'";
+        println(authenticateQuery)
+        val thread = Thread {
             try {
-                thread.join()
+                println(authenticateQuery)
+                val statement = connection?.createStatement()
+                val resultSet = statement?.executeQuery(authenticateQuery);
+                val sharedPreferences = context.getSharedPreferences("TripAdvisor", Context.MODE_PRIVATE)
+                while (resultSet?.next() == true) {
+                    userExist = true
+                    val editor = sharedPreferences.edit()
+                    editor.putString("username", resultSet.getString("username"))
+                    editor.apply()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return userExist
-
         }
+
+
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return userExist
+
+    }
+
     fun insertReview(userId: Int, username: String, review: String) {
         val thread = Thread {
             try {
                 Class.forName("com.mysql.jdbc.Driver")
                 connection = DriverManager.getConnection(url, user, password)
                 val statement = connection?.createStatement()
-                val query = "INSERT INTO reviews (userid, username, review) VALUES ('$userId', '$username', '$review')"
+                val query =
+                    "INSERT INTO reviews (userid, username, review) VALUES ('$userId', '$username', '$review')"
                 val rowsAffected = statement?.executeUpdate(query)
 
                 if (rowsAffected != null && rowsAffected > 0) {
 
                     println("Review inserted successfully")
                 } else {
-
                     println("Failed to insert review")
                 }
             } catch (e: Exception) {
@@ -124,4 +127,31 @@ class DatabaseConnector(context:Context) {
         }
     }
 
+    fun deleteReview(id: Int) {
+        val thread = Thread {
+            try {
+                Class.forName("com.mysql.jdbc.Driver")
+                connection = DriverManager.getConnection(url, user, password)
+                val statement = connection?.createStatement()
+                val query = "DELETE FROM reviews WHERE id = '$id'"
+                val rowsAffected = statement?.executeUpdate(query)
+
+                if (rowsAffected != null && rowsAffected > 0) {
+                    println("Review deleted successfully")
+                } else {
+                    println("Failed to delete review")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                connection?.close()
+            }
+        }
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

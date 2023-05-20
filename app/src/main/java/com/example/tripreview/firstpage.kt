@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
 
         val signup = findViewById<Button>(R.id.signup);
         signup.setOnClickListener{
-            val intent = Intent(this, Signup::class.java)
+            val intent = Intent(this, item_review::class.java)
             startActivity(intent)
         }
         val login = findViewById<Button>(R.id.startlogin);

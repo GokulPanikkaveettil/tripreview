@@ -32,7 +32,7 @@ class Login : ComponentActivity() {
                 userexist == true
             )
             {
-                val intent = Intent(this, review::class.java)
+                val intent = Intent(this, Review::class.java)
                 startActivity(intent)
             }
             else if (
@@ -43,5 +43,4 @@ class Login : ComponentActivity() {
             }
             }
         }
-
     }
