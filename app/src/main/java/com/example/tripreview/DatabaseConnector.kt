@@ -76,10 +76,11 @@ class DatabaseConnector(context:Context) {
                 println(authenticateQuery)
                 val statement = connection?.createStatement()
                 val resultSet = statement?.executeQuery(authenticateQuery);
-                val sharedPreferences = context.getSharedPreferences("TripAdvisor", Context.MODE_PRIVATE)
+                val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
                 while (resultSet?.next() == true) {
                     userExist = true
                     val editor = sharedPreferences.edit()
+                    editor.remove("username")
                     editor.putString("username", resultSet.getString("username"))
                     editor.apply()
                 }
@@ -168,6 +169,7 @@ class DatabaseConnector(context:Context) {
                 connection = DriverManager.getConnection(url, user, password)
                 val statement = connection?.createStatement()
                 val query = "SELECT firstName, lastName FROM users WHERE username = '$username'"
+                println(query)
                 val resultSet = statement?.executeQuery(query)
 
                 if (resultSet != null && resultSet.next()) {
@@ -187,6 +189,29 @@ class DatabaseConnector(context:Context) {
             e.printStackTrace()
         }
         return mutableListOf(firstName, lastName)
+    }
+
+    fun updateUser(firstName: String, lastName: String) {
+        val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "default value")
+        val thread = Thread {
+            try {
+                Class.forName("com.mysql.jdbc.Driver")
+                connection = DriverManager.getConnection(url, user, password)
+                val statement = connection?.createStatement()
+                val query = "UPDATE users SET firstName = '${firstName}', lastName = '${lastName}' WHERE username = '$username'"
+                println(query)
+                statement?.executeUpdate(query)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

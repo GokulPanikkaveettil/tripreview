@@ -1,5 +1,6 @@
 package com.example.tripreview
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 data class ReviewList(val username: String, val review: String)
 
@@ -35,17 +37,39 @@ class item_review : AppCompatActivity() {
         // Set the layout manager for the RecyclerView (e.g., LinearLayoutManager)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation);
+        navigation.selectedItemId = R.id.ic_home
         navigation.setOnItemSelectedListener {
             when (it.itemId) {
+                R.id.ic_home -> {
+                    val intent = Intent(this, item_review::class.java)
+                    startActivity(intent)
+                }
                 R.id.ic_myreview -> {
                     val intent = Intent(this, Review::class.java)
                     startActivity(intent)
                 }
+                R.id.ic_account -> {
+                    val intent = Intent(this, userdetails::class.java)
+                    startActivity(intent)
+                }
+                R.id.ic_logout -> {
+                    val sharedPreferences = this.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    val intent = Intent(this, Login::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+
             }
+
             true
         }
+
+        }
     }
-}
+
 
 class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     // Define references to views in item_review.xml
@@ -56,7 +80,8 @@ class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 class ReviewAdapter(private val reviews: List<ReviewList>) : RecyclerView.Adapter<ReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_review, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_review, parent, false)
         return ReviewViewHolder(itemView)
     }
 

@@ -27,23 +27,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/review" />
+        android:layout_centerInParent="true"
+        android:text="submit" />
 
     <Button
         android:id="@+id/deletereviewbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button"
         android:text="Delete"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitreview" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/submitreview" />
 
     <FrameLayout
         android:id="@+id/fl_wrapper"
@@ -60,11 +54,6 @@
         app:itemTextColor="#fff"
         app:itemIconTint="@color/white"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/nav_menu"/>
-
-
-
-
+        app:menu="@menu/nav_menu" />
 
 </RelativeLayout>
-

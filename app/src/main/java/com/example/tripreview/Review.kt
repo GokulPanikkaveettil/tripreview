@@ -14,6 +14,7 @@ class Review : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
 
+
         val submitreview = findViewById<Button>(R.id.submitreview)
         val review = findViewById<EditText>(R.id.review)
         val reviewEditText = findViewById<EditText>(R.id.review)
@@ -33,6 +34,7 @@ class Review : ComponentActivity() {
             reviewEditText.text.clear()
         }
         val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation);
+        navigation.selectedItemId = R.id.ic_myreview
         navigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.ic_home -> {
@@ -42,6 +44,21 @@ class Review : ComponentActivity() {
                 R.id.ic_myreview -> {
                     val intent = Intent(this, Review::class.java)
                     startActivity(intent)
+                }
+                R.id.ic_account -> {
+                    val intent = Intent(this, userdetails::class.java)
+                    startActivity(intent)
+                }
+                R.id.ic_logout -> {
+                    val sharedPreferences = this.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    val intent = Intent(this, Login::class.java)
+                    startActivity(intent)
+                    finish()
+
+
                 }
             }
             true
