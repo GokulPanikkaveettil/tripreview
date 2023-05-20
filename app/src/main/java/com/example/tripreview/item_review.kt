@@ -1,5 +1,6 @@
 package com.example.tripreview
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 data class ReviewList(val username: String, val review: String)
 
@@ -32,6 +34,16 @@ class item_review : AppCompatActivity() {
 
         // Set the layout manager for the RecyclerView (e.g., LinearLayoutManager)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation);
+        navigation.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.ic_myreview -> {
+                    val intent = Intent(this, Review::class.java)
+                    startActivity(intent)
+                }
+            }
+            true
+        }
     }
 }
 

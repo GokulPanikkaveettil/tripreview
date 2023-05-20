@@ -32,7 +32,7 @@ class Login : ComponentActivity() {
                 userexist == true
             )
             {
-                val intent = Intent(this, Review::class.java)
+                val intent = Intent(this, item_review::class.java)
                 startActivity(intent)
             }
             else if (

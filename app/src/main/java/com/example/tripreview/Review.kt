@@ -36,11 +36,11 @@ class Review : ComponentActivity() {
         navigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.ic_home -> {
-                    val intent = Intent(this, Review::class.java)
+                    val intent = Intent(this, item_review::class.java)
                     startActivity(intent)
                 }
                 R.id.ic_myreview -> {
-                    val intent = Intent(this, item_review::class.java)
+                    val intent = Intent(this, Review::class.java)
                     startActivity(intent)
                 }
             }

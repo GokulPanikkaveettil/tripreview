@@ -154,4 +154,39 @@ class DatabaseConnector(context:Context) {
             e.printStackTrace()
         }
     }
+
+    data class User(var firstName: String, var lastName: String)
+
+    fun getUserById(): MutableList<String> {
+        var firstName = ""
+        var lastName = ""
+        val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "default value")
+        val thread = Thread {
+            try {
+                Class.forName("com.mysql.jdbc.Driver")
+                connection = DriverManager.getConnection(url, user, password)
+                val statement = connection?.createStatement()
+                val query = "SELECT firstName, lastName FROM users WHERE username = '$username'"
+                val resultSet = statement?.executeQuery(query)
+
+                if (resultSet != null && resultSet.next()) {
+                    firstName = resultSet.getString("firstName")
+                    lastName = resultSet.getString("lastName")
+
+
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return mutableListOf(firstName, lastName)
+    }
+
 }
