@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.assignment_review.DatabaseConnector
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,7 +19,7 @@ class Review : ComponentActivity() {
         val submitreview = findViewById<Button>(R.id.submitreview)
         val review = findViewById<EditText>(R.id.review)
         val reviewEditText = findViewById<EditText>(R.id.review)
-        val sharedPreferences = getSharedPreferences("TripAdvisor", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
         submitreview.setOnClickListener {
             val database = DatabaseConnector(this)
             val username = sharedPreferences.getString("username", "default value")
@@ -29,9 +30,11 @@ class Review : ComponentActivity() {
         val database = DatabaseConnector(this)
         deleteReviewButton.setOnClickListener {
             val username = sharedPreferences.getString("username", "default value")
+            val userId = sharedPreferences.getInt("userId", -1)
             val reviewText = reviewEditText.text.toString()
-            database.deleteReview(18)
+            database.deleteReview(userId)
             reviewEditText.text.clear()
+            Toast.makeText(this, "Review deleted successfully", Toast.LENGTH_SHORT).show()
         }
         val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation);
         navigation.selectedItemId = R.id.ic_myreview

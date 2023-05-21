@@ -33,7 +33,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="tripadvisor"
+            android:label="tripreview"
             android:theme="@style/Theme.Tripreview">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

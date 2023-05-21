@@ -63,23 +63,3 @@ class userdetails : AppCompatActivity() {
 
     }
 
-
-
-   //editTextText.setText(userDetails.firstName)
-   // editTextText2.setText(userDetails.lastName)
-
-
- //Update button click event
-  //al updateButton = findViewById<Button>(R.id.button)
-   //updateButton.setOnClickListener {
-     // val editedLastName = editTextText2.text.toString()
-
-        // Update the user details in the database
-     //val success = database.updateUserDetails(userId, editedFirstName, editedLastName)
-
-       //if (success) {
-         //   Toast.makeText(this, "User details updated successfully", Toast.LENGTH_SHORT).show()
-       //} else {
-         //   Toast.makeText(this, "Failed to update user details", Toast.LENGTH_SHORT).show()
-        //}
-    //}

@@ -1,6 +1,7 @@
 package com.example.assignment_review
 
 import android.content.Context
+import com.example.tripreview.ReviewList
 import java.sql.DriverManager
 import java.sql.SQLException
 import java.sql.Connection
@@ -10,7 +11,7 @@ class DatabaseConnector(context:Context) {
 
     val url = "jdbc:mysql://sql.freedb.tech:3306/freedb_tripadvisor?autoReconnect=true&useSSL=false"
     val user = "freedb_tripadvisor"
-    val password = "pW@yKYBN5a8@@q6"
+    val password = "hGavyg!3R%D%kpV"
     val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
     private var connection: Connection? = null
     val context=context
@@ -214,4 +215,37 @@ class DatabaseConnector(context:Context) {
         }
     }
 
+    fun selectReviews(): List<ReviewList> {
+        val reviewList = mutableListOf<ReviewList>()
+
+        val thread = Thread {
+            try {
+                val statement = connection?.createStatement()
+                val query = "SELECT username, review FROM reviews"
+                val resultSet = statement?.executeQuery(query)
+
+                while (resultSet?.next() == true) {
+                    val username = resultSet.getString("username")
+                    val review = resultSet.getString("review")
+
+                    val reviewItem = ReviewList(username = username, review = review)
+                    reviewList.add(reviewItem)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return reviewList
+    }
+
 }
+
+

@@ -7,10 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.assignment_review.DatabaseConnector
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.graphics.Rect
+
 
 
 data class ReviewList(val username: String, val review: String)
@@ -21,21 +26,13 @@ class item_review : AppCompatActivity() {
         setContentView(R.layout.review_list_view)
 
         val recyclerView: RecyclerView = findViewById(R.id.recycler)
-
-        // Create a list of reviews (replace with your actual data)
-        val reviewList = mutableListOf<ReviewList>().apply {
-            add(ReviewList(username = "John", review = "Great experience!"))
-            add(ReviewList(username = "Mary", review = "Excellent service!"))
-            add(ReviewList(username = "David", review = "Amazing place!"))
-        }
-        // Create an instance of the ReviewAdapter
+        val database = DatabaseConnector(this)
+        val reviewList = database.selectReviews()
         val reviewAdapter = ReviewAdapter(reviewList)
-
-        // Set the adapter on the RecyclerView
         recyclerView.adapter = reviewAdapter
-
-        // Set the layout manager for the RecyclerView (e.g., LinearLayoutManager)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+
         val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation);
         navigation.selectedItemId = R.id.ic_home
         navigation.setOnItemSelectedListener {
@@ -72,7 +69,7 @@ class item_review : AppCompatActivity() {
 
 
 class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    // Define references to views in item_review.xml
+
     val usernameTextView: TextView = itemView.findViewById(R.id.usernameTextView)
     val reviewTextView: TextView = itemView.findViewById(R.id.reviewTextView)
 }
@@ -88,7 +85,7 @@ class ReviewAdapter(private val reviews: List<ReviewList>) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         val review = reviews[position]
 
-        // Bind review data to views in the ViewHolder
+
         holder.usernameTextView.text = review.username
         holder.reviewTextView.text = review.review
     }
