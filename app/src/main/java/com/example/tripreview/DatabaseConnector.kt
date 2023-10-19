@@ -11,7 +11,7 @@ class DatabaseConnector(context:Context) {
 
     val url = "jdbc:mysql://sql.freedb.tech:3306/freedb_tripadvisor?autoReconnect=true&useSSL=false"
     val user = "freedb_tripadvisor"
-    val password = "ce5p8%X%uX*QmXm"
+    val password = "dX3?gudJ7nHQypS"
     val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
     private var connection: Connection? = null
     val context=context

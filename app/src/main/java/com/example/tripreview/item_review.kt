@@ -24,7 +24,7 @@ data class ReviewList(val username: String, val review: String, val reviewId: In
 class item_review : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.review_list_view)
+        setContentView(R.layout.activity_allreviews)
 
         val recyclerView: RecyclerView = findViewById(R.id.recycler)
         val database = DatabaseConnector(this)
@@ -91,10 +91,10 @@ class ReviewViewHolder(itemView: View, context:Context) : RecyclerView.ViewHolde
 
 
         if(view.id == likebutton.id){
-            likebutton.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+            likebutton.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
         }
         if(view.id == dislikebutton.id){
-            dislikebutton.setImageResource(R.drawable.baseline_thumb_down_alt_24)
+            dislikebutton.setImageResource(R.drawable.baseline_thumb_down_off_alt_24)
         }
         val intent = Intent(context, Review::class.java)
         intent.putExtra("review", reviewTextView.text)
