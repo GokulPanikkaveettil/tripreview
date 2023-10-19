@@ -28,6 +28,8 @@ class Review : ComponentActivity() {
             val username = sharedPreferences.getString("username", "default value")
             database.insertReview(1, username.toString(), review.text.toString())
             review.text.clear()
+            val intent = Intent(this, item_review::class.java)
+            startActivity(intent)
         }
         val updateReviewButton = findViewById<Button>(R.id.Editreviewbutton)
         val reviewupdateText = findViewById<EditText>(R.id.review)
@@ -46,17 +48,21 @@ class Review : ComponentActivity() {
 
                 Toast.makeText(this, "Failed to update review", Toast.LENGTH_SHORT).show()
             }
+            val intent = Intent(this, item_review::class.java)
+            startActivity(intent)
+        }
 
 
             val deleteReviewButton = findViewById<Button>(R.id.deletereviewbutton)
-            val database = DatabaseConnector(this)
             deleteReviewButton.setOnClickListener {
-                val username = sharedPreferences.getString("username", "default value")
-                val userId = sharedPreferences.getInt("userId", -1)
+                val username = sharedPreferences.getString("userName", "default value")
+                val reviewId = this@Review.intent.getStringExtra("reviewId").toString()
                 val reviewText = reviewEditText.text.toString()
-                database.deleteReview(userId)
+                database.deleteReview(reviewId.toInt())
                 reviewEditText.text.clear()
                 Toast.makeText(this, "Review deleted successfully", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, item_review::class.java)
+                startActivity(intent)
             }
             val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation);
             navigation.selectedItemId = R.id.ic_myreview
@@ -92,7 +98,6 @@ class Review : ComponentActivity() {
                 }
                 true
             }
-        }
     }
 }
 
