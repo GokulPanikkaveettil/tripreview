@@ -19,6 +19,13 @@
         android:textSize="15sp"
         android:textStyle="bold"
         />
+    <TextView
+        android:id="@+id/reviewId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

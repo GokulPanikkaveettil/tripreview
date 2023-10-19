@@ -23,9 +23,9 @@ class userdetails : AppCompatActivity() {
 
         val upbutton = findViewById<Button>(R.id.updateButton)
         upbutton.setOnClickListener {
-            val firstName = editTextText.text.toString()
-            val lastName = editTextText2.text.toString()
-            val updatedUser = database.updateUser(firstName, lastName)
+            val firstname = editTextText.text.toString()
+            val lastname = editTextText2.text.toString()
+            val updatedUser = database.updateUser(firstname, lastname)
             Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show()
         }
 

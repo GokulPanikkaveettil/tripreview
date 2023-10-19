@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".allreviews">
+    tools:context=".Allreviews">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviewRecyclerView"
@@ -33,11 +33,20 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+
         <TextView
             android:id="@+id/reviewTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/reviewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp" />
+
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

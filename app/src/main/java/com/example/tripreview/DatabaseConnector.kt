@@ -11,7 +11,7 @@ class DatabaseConnector(context:Context) {
 
     val url = "jdbc:mysql://sql.freedb.tech:3306/freedb_tripadvisor?autoReconnect=true&useSSL=false"
     val user = "freedb_tripadvisor"
-    val password = "hGavyg!3R%D%kpV"
+    val password = "ce5p8%X%uX*QmXm"
     val sharedPreferences = context.getSharedPreferences("tripadvisor", Context.MODE_PRIVATE)
     private var connection: Connection? = null
     val context=context
@@ -70,7 +70,7 @@ class DatabaseConnector(context:Context) {
         println("$username $password")
         var userExist = false
         val authenticateQuery =
-            "select * from users where username='$username' and password='$password'";
+            "select * from users where userName='$username' and password='$password'";
         println(authenticateQuery)
         val thread = Thread {
             try {
@@ -108,7 +108,7 @@ class DatabaseConnector(context:Context) {
                 connection = DriverManager.getConnection(url, user, password)
                 val statement = connection?.createStatement()
                 val query =
-                    "INSERT INTO reviews (userid, username, review) VALUES ('$userId', '$username', '$review')"
+                    "INSERT INTO reviews (username, review) VALUES ('$username', '$review')"
                 val rowsAffected = statement?.executeUpdate(query)
 
                 if (rowsAffected != null && rowsAffected > 0) {
@@ -129,13 +129,13 @@ class DatabaseConnector(context:Context) {
         }
     }
 
-    fun deleteReview(id: Int) {
+    fun deleteReview(Id: Int) {
         val thread = Thread {
             try {
                 Class.forName("com.mysql.jdbc.Driver")
                 connection = DriverManager.getConnection(url, user, password)
                 val statement = connection?.createStatement()
-                val query = "DELETE FROM reviews WHERE id = '$id'"
+                val query = "DELETE FROM reviews WHERE reviewID = '$Id'"
                 val rowsAffected = statement?.executeUpdate(query)
 
                 if (rowsAffected != null && rowsAffected > 0) {
@@ -221,14 +221,15 @@ class DatabaseConnector(context:Context) {
         val thread = Thread {
             try {
                 val statement = connection?.createStatement()
-                val query = "SELECT username, review FROM reviews"
+                val query = "SELECT username, review,reviewId FROM reviews"
                 val resultSet = statement?.executeQuery(query)
 
                 while (resultSet?.next() == true) {
                     val username = resultSet.getString("username")
                     val review = resultSet.getString("review")
+                    val reviewId = resultSet.getInt("reviewId")
 
-                    val reviewItem = ReviewList(username = username, review = review)
+                    val reviewItem = ReviewList(username = username, review = review, reviewId=reviewId)
                     reviewList.add(reviewItem)
                 }
             } catch (e: Exception) {
@@ -246,6 +247,34 @@ class DatabaseConnector(context:Context) {
         return reviewList
     }
 
-}
+    fun updateReview(reviewId: Int, review: String) {
+        val thread = Thread {
+            try {
+                Class.forName("com.mysql.jdbc.Driver")
+                connection = DriverManager.getConnection(url, user, password)
+                val statement = connection?.createStatement()
+                val reviewID= reviewId
+                val query = "UPDATE reviews SET review = '$review' WHERE reviewID = $reviewID"
+                val rowsAffected = statement?.executeUpdate(query)
+
+                if (rowsAffected != null && rowsAffected > 0) {
+                    println("Review updated successfully")
+                } else {
+                    println("Failed to update review")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    }
+
 
 
